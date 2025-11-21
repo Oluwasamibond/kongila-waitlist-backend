@@ -22,6 +22,10 @@ mongoose
 // Routes
 import leadRoutes from "./route/leadRoutes.js";
 
+app.get("/", (req, res) => {
+  res.send("Backend is running ✅");
+});
+
 app.use("/api/leads", leadRoutes);
 
 const PORT = process.env.PORT || 8000;
