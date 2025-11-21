@@ -11,6 +11,15 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
+
+
+app.use(
+  cors({
+    origin: "https://kongila-waitlist.vercel.app",
+    methods: ["GET", "POST"],
+  })
+);
+
 job.start();
 
 // connect to mongodb
