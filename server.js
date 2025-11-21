@@ -13,14 +13,6 @@ app.use(cors());
 app.use(bodyParser.json());
 job.start();
 
-app.use(
-  cors({
-    origin: "https://kongila-pre-frontend.vercel.app", // your frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // only if you use cookies or auth headers
-  })
-);
-
 // connect to mongodb
 mongoose
   .connect(process.env.MONGO_URI)
