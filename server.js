@@ -11,7 +11,7 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 app.use(bodyParser.json());
-job.start()
+job.start();
 
 app.use(
   cors({
@@ -28,11 +28,9 @@ mongoose
   .catch((err) => console.log(err));
 
 // Routes
-import leadRoutes from "./route/leadRoutes.js"
-import adminRoutes from "./route/adminRoutes.js";
+import leadRoutes from "./route/leadRoutes.js";
 
-app.use("/api/leads", leadRoutes)
-app.use("/api/admin", adminRoutes);
+app.use("/api/leads", leadRoutes);
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
