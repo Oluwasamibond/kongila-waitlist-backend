@@ -13,12 +13,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
-app.use(
+{/* app.use(
   cors({
     origin: "https://kongila-waitlist.vercel.app",
     methods: ["GET", "POST"],
   })
-);
+); */}
 
 job.start();
 
