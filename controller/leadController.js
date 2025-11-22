@@ -1,17 +1,21 @@
 import Lead from "../model/Lead.js";
-import { sendEmail } from "../utils/emailSender.js"; // SendGrid setup
+import { sendEmail } from "../utils/emailSender.js";
 
-// Send waitlist email using verified SendGrid sender
-const sendWaitlistEmail = async (email, firstName) => {
+// Send welcome email after signing up
+const sendWaitlistEmail = async (email, fullName) => {
+  const firstName = fullName?.split(" ")[0] || fullName;
+
   const subject = "Welcome to Kongila Waitlist!";
-  const html = `<p>Hi ${firstName},</p>
-                <p>Thank you for signing up for the Kongila waitlist!
-                   We're thrilled to have you as part of our community.
-                   We are working hard to connect top professional talents with leading companies,
-                   and you'll be the first to know about exclusive updates, opportunities,
-                   and our official launch. 🚀
-                </p>
-                <p>— The Kongila Team</p>`;
+  const html = `
+    <p>Hi ${firstName},</p>
+    <p>Thank you for signing up for the Kongila waitlist!
+       We're thrilled to have you as part of our community.
+       We are committed to connecting top professional talents with leading global companies,
+       and you'll be the first to know about exclusive updates, opportunities,
+       and our official launch. 🚀
+    </p>
+    <p>— The Kongila Team</p>
+  `;
 
   try {
     await sendEmail(email, subject, html);
@@ -24,52 +28,101 @@ const sendWaitlistEmail = async (email, firstName) => {
 export const createLead = async (req, res) => {
   try {
     const {
-      firstName,
-      lastName,
-      email,
-      country,
-      companySector,
       userType,
+
+      // Talent fields
+      fullName,
+      email,
+      phone,
+      country,
+      skillset,
+      professionalLevel,
+       preferredRole,
+
       // Employer fields
       companyName,
+      industry,
       companySize,
+      headquarters,
+      website,
+
+      contactName,
+      contactJobTitle,
+      contactEmail,
+      contactPhone,
+
+      engagementType,
+      rolesAndSkills,
+      numberOfTalents,
+      experienceLevel,
+      preferredTimezone,
       hiringTimeline,
-      // Talent fields
-      phoneCode,
-      phoneNumber,
-      competency,
-      role,
-      whatsappUpdates,
     } = req.body;
+
+    // Basic validation
+    if (!userType) {
+      return res.status(400).json({ message: "userType is required" });
+    }
+
+    if (userType === "Talent") {
+      if (!fullName || !email || !phone || !country || !skillset || !professionalLevel || !preferredRole) {
+        return res.status(400).json({ message: "Missing required Talent fields" });
+      }
+    }
+
+    if (userType === "Employer") {
+      if (!companyName || !industry || !companySize || !contactEmail) {
+        return res.status(400).json({ message: "Missing required Employer fields" });
+      }
+    }
 
     // Save lead to DB
     const lead = await Lead.create({
-      firstName,
-      lastName,
-      email,
-      country,
-      companySector,
       userType,
+
+      // Talent
+      fullName,
+      email,
+      phone,
+      country,
+      skillset,
+      professionalLevel,
+      preferredRole,
+
+      // Employer
       companyName,
+      industry,
       companySize,
+      headquarters,
+      website,
+
+      contactName,
+      contactJobTitle,
+      contactEmail,
+      contactPhone,
+
+      engagementType,
+      rolesAndSkills,
+      numberOfTalents,
+      experienceLevel,
+      preferredTimezone,
       hiringTimeline,
-      phoneCode,
-      phoneNumber,
-      competency,
-      role,
-      whatsappUpdates,
     });
 
-    // Send welcome email asynchronously using SendGrid
-    sendWaitlistEmail(email, firstName);
+    // Send welcome email asynchronously
+    sendWaitlistEmail(email, fullName);
 
-    res.status(201).json({ message: "Lead saved and email sent", lead });
+    res.status(201).json({
+      message: "Lead saved and welcome email sent",
+      lead,
+    });
   } catch (error) {
+    console.error("Lead creation failed:", error);
     res.status(500).json({ message: error.message });
   }
 };
 
-// Admin: get all leads
+// Admin: Get all leads
 export const getLeads = async (req, res) => {
   try {
     const leads = await Lead.find().sort({ createdAt: -1 });

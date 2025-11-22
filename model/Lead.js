@@ -2,25 +2,39 @@ import mongoose from "mongoose";
 
 const leadSchema = new mongoose.Schema(
   {
-    // Common fields
-    firstName: { type: String, required: true },
-    lastName: { type: String, required: true },
-    email: { type: String, required: true },
-    country: { type: String, required: true },
-    companySector: { type: String, required: true },
-    userType: { type: String, enum: ["Employer", "Talent"], required: true },
+    userType: {
+      type: String,
+      enum: ["Talent", "Employer"],
+      required: true,
+    },
 
-    // Employer-specific
+    // TALENT FIELDS
+    fullName: String,
+    email: String,
+    phone: String,
+    country: String,
+    skillset: String,
+    professionalLevel: String,
+     preferredRole: String,
+
+    // EMPLOYER FIELDS
     companyName: String,
+    industry: String,
     companySize: String,
-    hiringTimeline: String,
+    headquarters: String,
+    website: String,
 
-    // Talent-specific
-    phoneCode: String,
-    phoneNumber: String,
-    competency: String,
-    role: String,
-    whatsappUpdates: Boolean,
+    contactName: String,
+    contactJobTitle: String,
+    contactEmail: String,
+    contactPhone: String,
+
+    engagementType: [String], // Multi-select checkboxes
+    rolesAndSkills: String,
+    numberOfTalents: Number,
+    experienceLevel: String,
+    preferredTimezone: String,
+    hiringTimeline: String,
   },
   { timestamps: true }
 );
