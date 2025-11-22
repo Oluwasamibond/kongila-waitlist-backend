@@ -15,22 +15,20 @@ const leadSchema = new mongoose.Schema(
     country: String,
     skillset: String,
     professionalLevel: String,
-     preferredRole: String,
+    preferredRole: String,
 
     // EMPLOYER FIELDS
     companyName: String,
     industry: String,
     companySize: String,
-    headquarters: String,
+    hqLocation: String,
     website: String,
 
-    contactName: String,
-    contactJobTitle: String,
-    contactEmail: String,
+    contactTitle: String,
     contactPhone: String,
 
-    engagementType: [String], // Multi-select checkboxes
-    rolesAndSkills: String,
+    engagementTypes: [String], // Multi-select checkboxes
+    rolesNeeded: String,
     numberOfTalents: Number,
     experienceLevel: String,
     preferredTimezone: String,

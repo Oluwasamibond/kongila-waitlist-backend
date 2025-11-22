@@ -37,22 +37,18 @@ export const createLead = async (req, res) => {
       country,
       skillset,
       professionalLevel,
-       preferredRole,
+      preferredRole,
 
       // Employer fields
       companyName,
       industry,
       companySize,
-      headquarters,
+      hqLocation,
       website,
-
-      contactName,
-      contactJobTitle,
-      contactEmail,
+      contactTitle,
       contactPhone,
-
-      engagementType,
-      rolesAndSkills,
+      engagementTypes,
+      rolesNeeded,
       numberOfTalents,
       experienceLevel,
       preferredTimezone,
@@ -71,7 +67,7 @@ export const createLead = async (req, res) => {
     }
 
     if (userType === "Employer") {
-      if (!companyName || !industry || !companySize || !contactEmail) {
+      if (!companyName || !industry || !companySize) {
         return res.status(400).json({ message: "Missing required Employer fields" });
       }
     }
@@ -93,16 +89,12 @@ export const createLead = async (req, res) => {
       companyName,
       industry,
       companySize,
-      headquarters,
+      hqLocation,
       website,
-
-      contactName,
-      contactJobTitle,
-      contactEmail,
+      contactTitle,
       contactPhone,
-
-      engagementType,
-      rolesAndSkills,
+      engagementTypes,
+      rolesNeeded,
       numberOfTalents,
       experienceLevel,
       preferredTimezone,
