@@ -13,12 +13,27 @@ app.use(cors());
 app.use(bodyParser.json());
 
 
- app.use(
+// CORS setup
+const allowedOrigins = [
+  "https://kongila.com",
+];
+
+app.use(
   cors({
-    origin: "https://kongila-waitlist.vercel.app",
+    origin: function (origin, callback) {
+      // allow requests with no origin (like Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.indexOf(origin) === -1) {
+        const msg = "The CORS policy for this site does not allow access from the specified Origin.";
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
     methods: ["GET", "POST"],
+    credentials: true, // allow cookies/auth headers if needed
   })
-); 
+);
+
 
 job.start();
 
